@@ -10,6 +10,7 @@ Eat donuts to get bigger, blast the spiky foes.
 
 ![Screenshot 3](screenshots/snake3.png)
 
-## Running:
+To play:
+
     pip install -r requirements.txt
     python game.py
