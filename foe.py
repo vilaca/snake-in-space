@@ -28,7 +28,7 @@ class Foe:
         self.rad_spd = random.randint(10, 50)
         self.x, self.y = self._update()
         self.size = 20 + random.randint(0, 20)
-        self.c = (random.randint(64, 255), random.randint(64, 255), random.randint(64, 255))
+        self.c = (random.randint(128, 255), random.randint(128, 255), random.randint(128, 255))
 
         self.spikes = []
         for i in range(0, 20):
