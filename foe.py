@@ -28,8 +28,13 @@ class Foe:
         self.rad_spd = random.randint(10, 50)
         self.x, self.y = self._update()
         self.size = 20 + random.randint(0, 20)
-        self.c = (random.randint(128, 255), random.randint(128, 255), random.randint(128, 255))
-
+        while True:
+            r = random.randint(96, 255)
+            g = random.randint(96, 255)
+            b = random.randint(96, 255)
+            if (r+b+g)/3 > 180:
+                self.c = (r, g, b)
+                break
         self.spikes = []
         for i in range(0, 20):
             self.spikes.append((
@@ -53,6 +58,6 @@ class Foe:
 
     def draw(self, background):
         for x, y in self.spikes:
-            p = (255-self.c[0], 255-self.c[1], 255-self.c[2])
-            pygame.draw.circle(background, p, (self.x, self.y), int(self.size/1.5), 3)
             pygame.draw.line(background, self.c, (self.x+x/2, self.y+y/2),  (self.x+x, self.y+y), 3)
+        p = (255 - self.c[0], 255 - self.c[1], 255 - self.c[2])
+        pygame.draw.circle(background, p, (self.x, self.y), int(self.size / 1.5), 3)

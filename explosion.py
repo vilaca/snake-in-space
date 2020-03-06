@@ -13,6 +13,12 @@ class Explosion:
         return self.size > 255
 
     def draw(self, background):
-        pygame.draw.circle(background, (255, 255, 255), (self.x, self.y), self.size, int(self.size/32))
-        pygame.draw.circle(background, (255, 255, 0), (self.x, self.y), self.size - int(self.size/32), int(self.size/16))
-        pygame.draw.circle(background, (255, 0, 0), (self.x, self.y), self.size - int(self.size/32)-int(self.size/16), int(self.size/12))
+        p = (self.x, self.y)
+        size = self.size
+        w = int(self.size/32)
+        pygame.draw.circle(background, (255, 255, 255), p, size, w)
+        size += -w
+        w = int(self.size/16)
+        pygame.draw.circle(background, (255, 255, 0), p, size, w)
+        size += -w
+        pygame.draw.circle(background, (255, 0, 0), p, size, int(self.size/12))

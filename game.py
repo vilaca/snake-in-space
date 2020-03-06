@@ -53,24 +53,23 @@ def main():
     paused = False
 
     while True:
+        paused = listen_keys(p1, paused)
+        if paused:
+            continue
 
         if len(scene.enemies) < 50 and random.randint(0, 160) == 0:
             scene.inc_enemies()
-
         if len(scene.enemies) > 0 and len(scene.enemies) / 10 > len(scene.food):
             scene.inc_food()
+        if len(scene.bubbles) == 0:
+            scene.inc_bubbles()
 
         surface = pygame.Surface(screen_dim)
-        paused = listen_keys(p1, paused)
-
-        if paused:
-            continue
 
         if p1.turning_left():
             uc.go_left()
         elif p1.turning_right():
             uc.go_right()
-
         if p1.firing():
             uc.fire()
         else:

@@ -14,3 +14,11 @@ To play:
 
     pip install -r requirements.txt
     python game.py
+
+Controls:
+
+:arrow_left: - Rotate left
+
+:arrow_right: - Rotate right
+
+:boom: (spacebar) - Fire laser

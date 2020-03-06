@@ -23,7 +23,6 @@ class Player:
         return self.__fire
 
     def input(self, event):
-
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 self.__fire = True
@@ -35,14 +34,11 @@ class Player:
                 self.__direction = self.__RIGHT_TURN
 
         elif event.type == pygame.KEYUP:
-
             if event.key == pygame.K_LEFT:
                 self.__left_pressed = False
                 self.__direction = self.__RIGHT_TURN if self.__right_pressed else self.__FORWARD
-
             elif event.key == pygame.K_RIGHT:
                 self.__right_pressed = False
                 self.__direction = self.__LEFT_TURN if self.__left_pressed else self.__FORWARD
-
             elif event.key == pygame.K_SPACE:
                 self.__fire = False

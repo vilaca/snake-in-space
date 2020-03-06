@@ -7,7 +7,7 @@ outside_colour = (50, 210, 50)
 white_colour = (255, 255, 255)
 black_colour = (0, 0, 0)
 red_colour = (255, 0, 0)
-blue_colour = (0, 0, 255)
+flash_colour = (0, 0, 255)
 
 
 class Snake:
@@ -41,19 +41,19 @@ class Snake:
             self.x += math.cos(self.rotation + math.pi / 2 + math.pi) * 5
             self.y += math.sin(self.rotation + math.pi / 2 + math.pi) * 5
             if self.x < 0:
-                self.x = 0
-            elif self.x > self.max_x:
                 self.x = self.max_x
+            elif self.x > self.max_x:
+                self.x = 0
             if self.y < 0:
-                self.y = 0
-            elif self.y > self.max_y:
                 self.y = self.max_y
+            elif self.y > self.max_y:
+                self.y = 0
             if len(self.tail) > self.max_tail:
                 self.tail.pop(0)
             self.tail.append((int(self.x), int(self.y)))
 
         def draw_tail():
-            colour = self.overheating_flash(blue_colour, white_colour, head_colour)
+            colour = self.overheating_flash(flash_colour, white_colour, head_colour)
             n = 1
             inc = self.size / len(self.tail) / 2
             for seg in self.tail:
@@ -66,13 +66,6 @@ class Snake:
                 self.over_heating += 1
                 if self.over_heating > 255:
                     self.over_heating = 255
-                # n = 0
-                # for ll in self.tail:
-                #     if n % 12 == 0:
-                #         pygame.draw.circle(background, (int(self.over_heating / 2), self.over_heating, 0),
-                #                            (ll[0], ll[1]), 10 + int(self.over_heating / 15),
-                #                            8 + int(self.over_heating / 25))
-                #     n += 1
             else:
                 self.over_heating = 0
 
@@ -88,12 +81,9 @@ class Snake:
             pygame.draw.line(background, black_colour, (self.x, self.y), (self.x + px2, self.y + py2), 5)
 
         self.tick = not self.tick
-
         move()
-
         if self.tick and self.is_hit and not self.fire_on:
             return
-
         draw_tail()
         snake_heating_fx()
         draw_head()
@@ -101,7 +91,7 @@ class Snake:
         if self.fire_on:
             x = math.cos(self.rotation + math.pi / 2 + math.pi) * 2000
             y = math.sin(self.rotation + math.pi / 2 + math.pi) * 2000
-            c = self.overheating_flash(white_colour, blue_colour, white_colour)
+            c = self.overheating_flash(white_colour, flash_colour, white_colour)
             pygame.draw.line(background, c, (self.x, self.y), (self.x + x, self.y + y), 1 + int(self.over_heating / 8))
             return (self.x, self.y), (self.x + x, self.y + y)
 
@@ -125,4 +115,3 @@ class Snake:
 
     def fed(self):
         self.max_tail += 4
-        pass
