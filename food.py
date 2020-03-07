@@ -27,8 +27,14 @@ class Food:
         self.rad = random.randint(1, 200)
         self.rad_spd = random.randint(10, 50)
         self.x, self.y = self._update()
-        self.size = 20 + random.randint(0, 20)
-        self.c = (random.randint(16, 255), random.randint(16, 255), random.randint(16, 255))
+        self.size = random.randint(20, 40)
+        while True:
+            r = random.randint(96, 255)
+            g = random.randint(96, 255)
+            b = random.randint(96, 255)
+            if (r+b+g)/3 > 200:
+                self.c = (r, g, b)
+                break
 
     def update(self):
         if self.v:
@@ -45,4 +51,6 @@ class Food:
             return self.cx, self.cy + int(math.sin(self.cx / self.rad_spd) * self.rad)
 
     def draw(self, background):
-        pygame.draw.circle(background, self.c, (self.x, self.y), self.size, int(self.size / 2))
+        pygame.draw.circle(background, (128, 128, 128), (self.x, self.y), self.size, 2)
+        pygame.draw.circle(background, self.c, (self.x, self.y), self.size-2, int(self.size / 2))
+        pygame.draw.circle(background, (128, 128, 128), (self.x, self.y), int(self.size/2)-1, 1)

@@ -13,26 +13,22 @@ flash_colour = (0, 0, 255)
 class Snake:
 
     def __init__(self, x, y, max_x, max_y):
-        self.max_x = max_x
-        self.max_y = max_y
-        self.x = x
-        self.y = y
-        self.rotation = math.pi/2
-        self.px, self.py = self.calc()
         self.fire_on = False
-        self.tail = []
-        self.over_heating = 0
-        self.tick = False
-        self.size = 20
         self.is_hit = False
         self.max_tail = 8
+        self.max_x = max_x
+        self.max_y = max_y
+        self.over_heating = 0
+        self.rotation = math.pi/2
+        self.px, self.py = self.calc()
+        self.size = 20
+        self.tail = []
+        self.tick = False
+        self.x = x
+        self.y = y
 
     def overheating_flash(self, tick, no_tick, normal):
-        if self.over_heating != 255:
-            return normal
-        if self.tick:
-            return tick
-        return no_tick
+        return normal if self.over_heating != 255 else  tick if self.tick else no_tick
 
     def draw(self, background):
         self.px, self.py = self.calc()
@@ -41,13 +37,13 @@ class Snake:
             self.x += math.cos(self.rotation + math.pi / 2 + math.pi) * 5
             self.y += math.sin(self.rotation + math.pi / 2 + math.pi) * 5
             if self.x < 0:
-                self.x = self.max_x
+                self.x += self.max_x
             elif self.x > self.max_x:
-                self.x = 0
+                self.x -= self.max_x
             if self.y < 0:
-                self.y = self.max_y
+                self.y += self.max_y
             elif self.y > self.max_y:
-                self.y = 0
+                self.y -= self.max_y
             if len(self.tail) > self.max_tail:
                 self.tail.pop(0)
             self.tail.append((int(self.x), int(self.y)))

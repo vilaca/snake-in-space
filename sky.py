@@ -4,7 +4,7 @@ from shapely.geometry import LineString
 from shapely.geometry import Point
 
 import bubble
-import explosion
+from explosion import ExplosionFactory
 import foe
 import food
 import stars
@@ -19,8 +19,8 @@ class Sky:
             stars.StarsLayer(screen_dim, (55, 55, 55), .25, 1)
         ]
         self.foreground = [
-            stars.StarsLayer(screen_dim, (255, 255, 255), 1.5, 4, 24),
-            stars.StarsLayer(screen_dim, (255, 255, 255), 1.5, 8, 7)
+            stars.StarsLayer(screen_dim, (255, 255, 255), 1.5, 4, 22),
+            stars.StarsLayer(screen_dim, (255, 255, 255), 6, 8, 7)
         ]
         self.enemies = [
             foe.Foe(screen_dim, True), foe.Foe(screen_dim, False)
@@ -54,14 +54,14 @@ class Sky:
             hit = circle.intersection(line)
             if not hit.is_empty:
                 self.enemies.remove(e)
-                self.exploding.insert(0, explosion.Explosion(e.x, e.y))
+                self.exploding.insert(0, ExplosionFactory.create_explosion(e.x, e.y))
         for e in reversed(self.food):
             p = Point(e.x % self.screen_dim[0], e.y)
             circle = p.buffer(e.size).boundary
             hit = circle.intersection(line)
             if not hit.is_empty:
                 self.food.remove(e)
-                self.exploding.insert(0, explosion.Explosion(e.x, e.y))
+                self.exploding.insert(0, ExplosionFactory.create_explosion(e.x, e.y))
         for e in reversed(self.bubbles):
             if e.is_in_grace():
                 continue
@@ -74,7 +74,7 @@ class Sky:
                     self.bubbles.append(n1)
                     self.bubbles.append(n2)
                 else:
-                    self.exploding.insert(0, explosion.Explosion(e.x, e.y))
+                    self.exploding.insert(0, ExplosionFactory.create_blue_explosion(e.x, e.y))
                 self.bubbles.remove(e)
 
     def inc_enemies(self):

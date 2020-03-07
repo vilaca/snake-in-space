@@ -20,6 +20,9 @@ class StarsLayer:
     def draw(self, background):
         for star in self.stars:
             p = (int(star[0] - self.travelled) % self.max_x, star[1])
+            if self.size > 3:
+                c = (0, 0, 255)
+                pygame.draw.circle(background, c, p, self.size+1, 1)
             pygame.draw.circle(background, self.color, p, self.size)
 
     def update(self):

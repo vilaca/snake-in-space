@@ -11,7 +11,7 @@ class Bubble:
         self.max_y = max_xy[1]
         self.x = x
         self.y = y
-        self.grace = 61
+        self.grace = 121
 
     def update(self):
         self.x += self.dx
