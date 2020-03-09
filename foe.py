@@ -6,7 +6,7 @@ import math
 
 class Foe:
     def __init__(self, w, rev=-1):
-        self.spike_size = random.randint(1, 8)
+        self.spike_size = random.randint(4, 12)
         self.w = w
         self.v = random.randint(0, 1) == 0
         if self.v:
@@ -30,18 +30,12 @@ class Foe:
         self.x, self.y = self._update()
         self.size = 20 + random.randint(0, 20)
         while True:
-            r = random.randint(96, 255)
-            g = random.randint(96, 255)
-            b = random.randint(96, 255)
+            r = random.randint(128, 255)
+            g = random.randint(128, 255)
+            b = random.randint(128, 255)
             if (r+b+g)/3 > 180:
                 self.c = (r, g, b)
                 break
-        self.spikes = []
-        for i in range(0, 20):
-            self.spikes.append((
-                math.cos(math.pi*2/20*i) * self.size,
-                math.sin(math.pi*2/20*i) * self.size,
-            ))
 
     def update(self):
         if self.v:
@@ -58,7 +52,11 @@ class Foe:
             return self.cx, self.cy + int(math.sin(self.cx/self.rad_spd) * self.rad)
 
     def draw(self, background):
-        for x, y in self.spikes:
+        m = random.randrange(4, 8)
+        for i in range(0, 20):
+            r = math.pi*2/20*i
+            x = math.cos(r) * self.size
+            y = math.sin(r*m) * self.size
             pygame.draw.line(background, self.c, (self.x+x/2, self.y+y/2),  (self.x+x, self.y+y), self.spike_size)
         p = (255 - self.c[0], 255 - self.c[1], 255 - self.c[2])
-        pygame.draw.circle(background, p, (self.x, self.y), int(self.size / 1.5), 3)
+        pygame.draw.circle(background, p, (self.x, self.y), int(self.size / 5))
