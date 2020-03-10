@@ -1,32 +1,35 @@
 
 import math
+import random
 from shapely.geometry import LineString
 from shapely.geometry import Point
 
 import bubble
 from explosion import ExplosionFactory
-import foe
-import food
-import stars
+from foe import Foe
+from food import FoodFactory
+from stars import StarsLayer
 
 
 class Sky:
     def __init__(self, screen_dim):
         self.screen_dim = screen_dim
         self.background = [
-            stars.StarsLayer(screen_dim, (100, 100, 105), 1, 3),
-            stars.StarsLayer(screen_dim, (80, 80, 120), .5, 2),
-            stars.StarsLayer(screen_dim, (55, 55, 55), .25, 1)
+            StarsLayer(screen_dim, (100, 100, 105), 1, 3),
+            StarsLayer(screen_dim, (80, 80, 120), .5, 2),
+            StarsLayer(screen_dim, (55, 55, 55), .25, 1)
         ]
         self.foreground = [
-            stars.StarsLayer(screen_dim, (255, 255, 255), 1.5, 4, 22),
-            stars.StarsLayer(screen_dim, (255, 255, 255), 6, 8, 7)
+            StarsLayer(screen_dim, (255, 255, 255), 1.5, 4, 22),
+            StarsLayer(screen_dim, (255, 255, 255), 6, 8, 7)
         ]
         self.enemies = [
-            foe.Foe(screen_dim, True), foe.Foe(screen_dim, False)
+            Foe(screen_dim), Foe(screen_dim)
         ]
         self.exploding = []
-        self.bubbles = [bubble.BubbleFactory().create_random(screen_dim)]
+        self.bubbles = [
+            bubble.BubbleFactory().create_random(screen_dim)
+        ]
         self.food = []
 
     def update(self):
@@ -56,6 +59,8 @@ class Sky:
                 self.enemies.remove(e)
                 self.exploding.insert(0, ExplosionFactory.create_explosion(e.x, e.y))
         for e in reversed(self.food):
+            if e.is_in_grace():
+                continue
             p = Point(e.x % self.screen_dim[0], e.y)
             circle = p.buffer(e.size).boundary
             hit = circle.intersection(line)
@@ -71,17 +76,19 @@ class Sky:
             if not hit.is_empty:
                 if e.has_children():
                     n1, n2 = e.hit()
-                    self.bubbles.append(n1)
-                    self.bubbles.append(n2)
+                    if random.randint(0, 1) == 0:
+                        self.food.append(FoodFactory.create(self.screen_dim, n1))
+                    if random.randint(0, 1) == 0:
+                        self.food.append(FoodFactory.create(self.screen_dim, n2))
+                    if random.randint(0, 1) == 0:
+                        self.bubbles.append(n1)
+                        self.bubbles.append(n2)
                 else:
                     self.exploding.insert(0, ExplosionFactory.create_blue_explosion(e.x, e.y))
                 self.bubbles.remove(e)
 
     def inc_enemies(self):
-        self.enemies.append(foe.Foe(self.screen_dim))
-
-    def inc_food(self):
-        self.food.append(food.Food(self.screen_dim))
+        self.enemies.append(Foe(self.screen_dim))
 
     def inc_bubbles(self):
         self.bubbles.append(bubble.BubbleFactory.create_random(self.screen_dim))

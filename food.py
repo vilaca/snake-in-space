@@ -5,25 +5,13 @@ import math
 
 
 class Food:
-    def __init__(self, w, rev=-1):
+    def __init__(self, w, cx, cy, direction, v):
+        self.grace = 120
+        self.v = v
+        self.dir = direction
+        self.cx = cx
+        self.cy = cy
         self.w = w
-        self.v = True if random.randint(0, 1) == 0 else False
-        if self.v:
-            if random.randint(0, 1) == 0:
-                self.cy = 0
-                self.dir = 1
-            else:
-                self.cy = w[1]
-                self.dir = -1
-            self.cx = random.randrange(w[0])
-        else:
-            if random.randint(0, 1) == 0:
-                self.cx = 0
-                self.dir = 1
-            else:
-                self.cx = w[0]
-                self.dir = -1
-            self.cy = random.randrange(w[1])
         self.rad = random.randint(1, 200)
         self.rad_spd = random.randint(10, 50)
         self.x, self.y = self._update()
@@ -37,6 +25,7 @@ class Food:
                 break
 
     def update(self):
+        self.grace -= 1
         if self.v:
             self.cy = (self.cy + 1 * self.dir) % self.w[1]
             self.x, self.y = self._update()
@@ -50,7 +39,39 @@ class Food:
         else:
             return self.cx, self.cy + int(math.sin(self.cx / self.rad_spd) * self.rad)
 
+    def is_in_grace(self):
+        return self.grace > 0
+
     def draw(self, background):
+        if self.is_in_grace() and self.grace % 4 == 0:
+            return
         pygame.draw.circle(background, (128, 128, 128), (self.x, self.y), self.size, 2)
         pygame.draw.circle(background, self.c, (self.x, self.y), self.size-2, int(self.size / 2))
         pygame.draw.circle(background, (128, 128, 128), (self.x, self.y), int(self.size/2)-1, 1)
+
+
+class FoodFactory:
+    @staticmethod
+    def create_random(screen_dim):
+        v = True if random.randint(0, 1) == 0 else False
+        if v:
+            if random.randint(0, 1) == 0:
+                cy = 0
+                direction = 1
+            else:
+                cy = screen_dim[1]
+                direction = -1
+            cx = random.randint(0, screen_dim[0])
+        else:
+            if random.randint(0, 1) == 0:
+                cx = 0
+                direction = 1
+            else:
+                cx = screen_dim[0]
+                direction = -1
+            cy = random.randint(0, screen_dim[1])
+        return Food(screen_dim, cx, cy, direction, v)
+
+    @staticmethod
+    def create(screen_dim, n):
+        return Food(screen_dim, n.x, n.y, 1, True)
