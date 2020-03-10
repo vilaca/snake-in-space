@@ -76,7 +76,8 @@ def main():
 
         scene.update()
 
-        uc.hit(scene.check_hit(uc))
+        if scene.check_hit(uc):
+            uc.hit()
 
         if scene.check_fed(uc):
             uc.fed()

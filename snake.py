@@ -14,7 +14,6 @@ class Snake:
 
     def __init__(self, x, y, max_x, max_y):
         self.fire_on = False
-        self.is_hit = False
         self.max_tail = 8
         self.max_x = max_x
         self.max_y = max_y
@@ -26,11 +25,14 @@ class Snake:
         self.tick = False
         self.x = x
         self.y = y
+        self.grace = 0
 
     def overheating_flash(self, tick, no_tick, normal):
         return normal if self.over_heating != 255 else  tick if self.tick else no_tick
 
     def draw(self, background):
+        if self.grace > 0:
+            self.grace -= 1
         self.px, self.py = self.calc()
 
         def move():
@@ -78,7 +80,7 @@ class Snake:
 
         self.tick = not self.tick
         move()
-        if self.tick and self.is_hit and not self.fire_on:
+        if self.tick and not self.fire_on and self.grace > 0:
             return
         draw_tail()
         snake_heating_fx()
@@ -106,13 +108,15 @@ class Snake:
     def stop_firing(self):
         self.fire_on = False
 
-    def hit(self, v):
-        self.is_hit = v
-        if not v or len(self.tail) < 9:
+    def hit(self):
+        if self.grace > 0:
             return
-        for i in range(0, 3):
+        if len(self.tail) < 17:
+            return
+        for i in range(0, 8):
             self.max_tail -= 1
             self.tail.pop(0)
+        self.grace = 200
 
     def fed(self):
         self.max_tail += 8
