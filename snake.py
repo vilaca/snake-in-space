@@ -111,9 +111,9 @@ class Snake:
     def hit(self):
         if self.grace > 0:
             return
-        if len(self.tail) < 17:
-            return
         for i in range(0, 8):
+            if len(self.tail) <= 8:
+                return
             self.max_tail -= 1
             self.tail.pop(0)
         self.grace = 200
