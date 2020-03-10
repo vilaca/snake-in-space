@@ -108,6 +108,11 @@ class Snake:
 
     def hit(self, v):
         self.is_hit = v
+        if not v or len(self.tail) < 9:
+            return
+        for i in range(0, 3):
+            self.max_tail -= 1
+            self.tail.pop(0)
 
     def fed(self):
-        self.max_tail += 4
+        self.max_tail += 8
