@@ -48,3 +48,12 @@ class ExplosionFactory:
             (0, 255, 255),
             (0, 0, 255)
         ))
+
+    @staticmethod
+    def create_food_explosion(x, y):
+        return _Explosion(x, y, Palette(
+            (255, 255, 255),
+            (0, 0, 0),
+            (255, 255, 255)
+        ))
+
