@@ -20,7 +20,7 @@ class Food:
             r = random.randint(96, 255)
             g = random.randint(96, 255)
             b = random.randint(96, 255)
-            if (r+b+g)/3 > 200:
+            if (r+b+g)/3 > 192:
                 self.c = (r, g, b)
                 break
 
@@ -43,7 +43,13 @@ class Food:
         return self.grace > 0
 
     def draw(self, background):
-        if self.is_in_grace() and self.grace % 4 == 0:
+        if self.is_in_grace() and self.grace & 5:
+            pygame.draw.circle(background, (64, 64, 64), (self.x, self.y), self.size, 2)
+            pygame.draw.circle(background, (
+                255-self.c[0],
+                255-self.c[1],
+                255-self.c[2]
+            ), (self.x, self.y), self.size - 2, int(self.size / 2))
             return
         pygame.draw.circle(background, (128, 128, 128), (self.x, self.y), self.size, 2)
         pygame.draw.circle(background, self.c, (self.x, self.y), self.size-2, int(self.size / 2))
