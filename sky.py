@@ -66,7 +66,7 @@ class Sky:
             hit = circle.intersection(line)
             if not hit.is_empty:
                 self.food.remove(e)
-                self.exploding.insert(0, ExplosionFactory.create_explosion(e.x, e.y))
+                self.exploding.insert(0, ExplosionFactory.create_food_explosion(e.x, e.y))
         for e in reversed(self.bubbles):
             if e.is_in_grace():
                 continue
@@ -76,13 +76,25 @@ class Sky:
             if not hit.is_empty:
                 if e.has_children():
                     n1, n2 = e.hit()
+                    explode = False
+                    explode2 = False
+
                     if random.randint(0, 1) == 0:
                         self.food.append(FoodFactory.create(self.screen_dim, n1))
+                    elif random.randint(0, 1) == 0:
+                        self.bubbles.append(n1)
+                    else:
+                        explode = True
+
                     if random.randint(0, 1) == 0:
                         self.food.append(FoodFactory.create(self.screen_dim, n2))
-                    if random.randint(0, 1) == 0:
-                        self.bubbles.append(n1)
+                    elif random.randint(0, 1) == 0:
                         self.bubbles.append(n2)
+                    else:
+                        explode2 = True
+
+                    if explode and explode2:
+                        self.exploding.insert(0, ExplosionFactory.create_blue_explosion(e.x, e.y))
                 else:
                     self.exploding.insert(0, ExplosionFactory.create_blue_explosion(e.x, e.y))
                 self.bubbles.remove(e)
