@@ -5,7 +5,7 @@ import math
 
 
 class Foe:
-    def __init__(self, w, rev=-1):
+    def __init__(self, w):
         self.spike_size = random.randint(4, 12)
         self.w = w
         self.v = random.randint(0, 1) == 0
