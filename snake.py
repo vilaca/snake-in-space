@@ -80,18 +80,17 @@ class Snake:
 
         self.tick = not self.tick
         move()
-        if self.tick and not self.fire_on and self.grace > 0:
-            return
-        draw_tail()
-        snake_heating_fx()
-        draw_head()
+        if not(self.tick and not self.fire_on and self.grace > 0):
+            draw_tail()
+            snake_heating_fx()
+            draw_head()
 
-        if self.fire_on:
-            x = math.cos(self.rotation + math.pi / 2 + math.pi) * 2000
-            y = math.sin(self.rotation + math.pi / 2 + math.pi) * 2000
-            c = self.overheating_flash(white_colour, flash_colour, white_colour)
-            pygame.draw.line(background, c, (self.x, self.y), (self.x + x, self.y + y), 1 + int(self.over_heating / 8))
-            return (self.x, self.y), (self.x + x, self.y + y)
+            if self.fire_on:
+                x = math.cos(self.rotation + math.pi / 2 + math.pi) * 2000
+                y = math.sin(self.rotation + math.pi / 2 + math.pi) * 2000
+                c = self.overheating_flash(white_colour, flash_colour, white_colour)
+                pygame.draw.line(background, c, (self.x, self.y), (self.x + x, self.y + y), 1 + int(self.over_heating / 8))
+                return (self.x, self.y), (self.x + x, self.y + y)
 
     def calc(self, rot=0):
         return math.cos(self.rotation + rot) * 30, math.sin(self.rotation + rot) * 30
@@ -111,7 +110,7 @@ class Snake:
     def hit(self):
         if self.grace > 0:
             return
-        for i in range(0, 8):
+        for i in range(0, int(len(self.tail)/3)):
             if len(self.tail) <= 8:
                 return
             self.max_tail -= 1
