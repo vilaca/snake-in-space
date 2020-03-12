@@ -93,8 +93,8 @@ class Bubble:
     def hit(self):
         dx = -1 if random.randint(0, 1) == 0 else 1
         dy = -1 if random.randint(0, 1) == 0 else 1
-        b1 = Bubble(dx, dy, (self.max_x, self.max_y), self.x, self.y, int(self.size * .6))
-        b2 = Bubble(dx*-1, dy*-1, (self.max_x, self.max_y), self.x, self.y, int(self.size * .6))
+        b1 = Bubble(dx, dy, (self.max_x, self.max_y), self.x, self.y, int(self.size * .8))
+        b2 = Bubble(dx*-1, dy*-1, (self.max_x, self.max_y), self.x, self.y, int(self.size * .8))
         return b1, b2
 
 
@@ -105,4 +105,4 @@ class BubbleFactory:
         dy = -1 if random.randint(0, 1) == 0 else 1
         x = random.randint(0, max_xy[0])
         y = random.randint(0, max_xy[1])
-        return Bubble(dx, dy, max_xy, x, y, 96)
+        return Bubble(dx, dy, max_xy, x, y, 64)
