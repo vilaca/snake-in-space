@@ -96,10 +96,10 @@ class Snake:
         return math.cos(self.rotation + rot) * 30, math.sin(self.rotation + rot) * 30
 
     def go_left(self):
-        self.rotation -= math.pi / (16 if not self.fire_on else 96 + self.over_heating / 3)
+        self.rotation -= math.pi / (32 if not self.fire_on else 96 + self.over_heating / 3)
 
     def go_right(self):
-        self.rotation += math.pi / (16 if not self.fire_on else 96 + self.over_heating / 3)
+        self.rotation += math.pi / (32 if not self.fire_on else 96 + self.over_heating / 3)
 
     def fire(self):
         self.fire_on = True

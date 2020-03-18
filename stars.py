@@ -23,8 +23,8 @@ class StarsLayer:
     def draw(self, background):
         for star in self.stars:
             p = (
-                int(star[0] - self.x) % self.max_x,
-                int(star[1] - self.y) % self.max_y
+                int(star[0] - self.x * self.spd) % self.max_x,
+                int(star[1] - self.y * self.spd) % self.max_y
             )
             if self.size > 4:
                 c = (0, 0, 128)
