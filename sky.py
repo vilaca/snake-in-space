@@ -32,8 +32,8 @@ class Sky:
         ]
         self.food = []
 
-    def update(self):
-        list(map(lambda s: s.update(), self.background + self.foreground))
+    def update(self, x, y):
+        list(map(lambda s: s.update(x, y), self.background + self.foreground))
         list(map(lambda en: en.update(), self.enemies))
         list(map(lambda en: en.update(), self.food))
         list(map(lambda en: en.update(), self.bubbles))

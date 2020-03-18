@@ -74,7 +74,7 @@ def main():
         else:
             uc.stop_firing()
 
-        scene.update()
+        scene.update(uc.x, uc.y)
 
         if scene.check_hit(uc):
             uc.hit()
