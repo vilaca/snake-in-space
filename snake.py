@@ -19,7 +19,6 @@ class Snake:
         self.max_y = max_y
         self.over_heating = 0
         self.rotation = math.pi/2
-        self.px, self.py = self.calc()
         self.size = 20
         self.tail = []
         self.tick = False
@@ -33,7 +32,6 @@ class Snake:
     def draw(self, background):
         if self.grace > 0:
             self.grace -= 1
-        self.px, self.py = self.calc()
 
         def move():
             self.x += math.cos(self.rotation + math.pi / 2 + math.pi) * 5
@@ -66,6 +64,9 @@ class Snake:
                     self.over_heating = 255
             else:
                 self.over_heating = 0
+
+        def calc(rot):
+            return math.cos(self.rotation + rot) * 30, math.sin(self.rotation + rot) * 30
 
         def draw_head():
             pygame.draw.circle(background, (0, 255, 0), (int(self.x), int(self.y)), self.size)
